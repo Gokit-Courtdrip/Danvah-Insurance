@@ -1,16 +1,38 @@
-@import url(../css/clash-display.css);
+@import url("clash-display.css");
+
+/* --- 1. Global Reset & Best Practices --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
 :root {
     --c-dark: #212529;
-    --c-brand: #4e57d4;
-    --c-brand-light: #6970dd;
-    --c-brand-rgb: 78, 87, 212;
+    --c-brand: #D21A2F;
+    /* UAE Red */
+    --c-brand-light: #e88d98;
+    /* Lighter Red */
+    --c-primary: #00732F;
+    /* UAE Green */
+    --c-brand-rgb: 210, 26, 47;
+    /* RGB for UAE Red */
+    --c-secondary: #000000;
+    /* UAE Black */
+    --c-light: #F9F9F9;
     --c-body: #727272;
     --font-base: "ClashDisplay", sans-serif;
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --transition: all 0.5s ease;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
+html {
+    scroll-padding-top: 100px;
+    /* Prevents content from being hidden under the fixed navbar on scroll */
+    scroll-behavior: smooth;
+}
+
+/* --- 2. Base & Typography --- */
 body {
     font-family: var(--font-base);
     line-height: 1.7;
@@ -23,19 +45,17 @@ h3,
 h4,
 h5,
 h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-    font-weight: 600;
+.display-1,
+.display-2,
+.display-3,
+.display-4 {
+    font-weight: 700;
     color: var(--c-dark);
 }
 
 a {
-    text-decoration: none;
     color: var(--c-brand);
+    text-decoration: none;
     transition: var(--transition);
 }
 
@@ -43,30 +63,26 @@ a:hover {
     color: var(--c-brand-light);
 }
 
-.testimonials-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    /* or space-around/space-between */
-    gap: 20px;
-    /* spacing between images */
-}
-
-.testimonials-container img {
-    max-width: 30%;
-    /* roughly 3 per row */
+img {
+    max-width: 100%;
     height: auto;
-    display: inline-block;
-    /* or block if inside flex */
 }
 
-
-/* CORRECTED: Reduced padding to bring sections closer */
+/* --- 3. Helpers & Reusable Components --- */
 .section-padding {
     padding-top: 80px;
-    /* Reduced from 140px */
     padding-bottom: 80px;
-    /* Reduced from 140px */
+}
+
+.section-title {
+    margin-bottom: 60px;
+}
+
+.section-title .line {
+    width: 60px;
+    height: 2px;
+    background-color: var(--c-brand);
+    margin: 16px auto 24px auto;
 }
 
 .theme-shadow {
@@ -78,374 +94,347 @@ a:hover {
     overflow: hidden;
 }
 
-.image-zoom-wrapper {
-    overflow: hidden;
-    position: relative;
-}
-
-.image-zoom-wrapper img {
+.image-zoom .image-zoom-wrapper img {
     transition: var(--transition);
 }
 
-.image-zoom:hover .image-zoom-warpper img {
+.image-zoom:hover .image-zoom-wrapper img {
     transform: scale(1.1);
 }
 
+/* --- 4. Navbar --- */
 .navbar {
     position: fixed;
-    /* So it stays at top while scrolling */
     top: 0;
     left: 0;
     width: 100%;
     height: 100px;
-    /* Fixed height */
-    line-height: 60px;
-    /* Vertically center navbar content */
-    background-color: #fff;
-    box-shadow: var(--box-shadow);
+    background-color: transparent;
     padding: 0 20px;
     display: flex;
     align-items: center;
-    /* Vertically center all children */
-    transition: top 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, top 0.4s ease;
     z-index: 9999;
 }
 
-
-.navbar-nav .nav-link {
-    font-weight: 500;
-    color: var(--c-dark);
+.navbar.navbar-hidden {
+    top: -100px;
+    /* Hides the navbar above the viewport */
 }
 
-.navbar-nav .nav-link.active {
-    color: var(--c-brand);
-}
-
-.navbar-nav .nav-item {
-    margin-right: 20px;
+.navbar.navbar-scrolled {
+    background-color: #fff;
+    box-shadow: var(--box-shadow);
 }
 
 .navbar-brand img {
-    max-height: 80px;
-    /* Adjust height as needed */
+    max-height: 50px;
     width: auto;
-    /* Maintain aspect ratio */
 }
 
+.navbar-nav .nav-link {
+    font-weight: 500;
+    color: #fff;
+    /* White text for transparent state (on hero) */
+    text-transform: uppercase;
+}
 
+.navbar.navbar-scrolled .navbar-nav .nav-link {
+    color: var(--c-dark);
+    /* Dark text for white background state */
+}
 
+.navbar-nav .nav-link.active {
+    color: #fff;
+    /* Keep active link white in transparent state */
+}
+
+.navbar.navbar-scrolled .navbar-nav .nav-link.active {
+    color: var(--c-brand);
+    /* Brand color for active link in scrolled state */
+}
 
 /* Button styles */
+.btn {
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 10px 24px;
+}
+
 .btn-brand {
     background-color: var(--c-brand);
+    border-color: var(--c-brand);
     color: white;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    transition: var(--transition);
 }
 
 .btn-brand:hover {
     background-color: var(--c-brand-light);
+    border-color: var(--c-brand-light);
     color: white;
 }
 
-/* CORRECTED: Hero section background position */
-#hero {
-    background: linear-gradient(#0000005e, #0000005e), url(../images/Danvah-Hero2.jpg);
+/* --- 5. Page Sections --- */
+#HOME {
+    /* UAE THEME: Using a placeholder image. For your final site, download a high-quality skyline photo,
+     * save it as 'dubai-skyline.jpg' in your 'assets/images' folder, and uncomment the line below. */
+    /* background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/dubai-skyline.jpg); */
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.pexels.com/photos/2044434/pexels-photo-2044434.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
     background-size: cover;
-    background-position: center top;
-    /* Adjusted to show more of the top of the image */
+    background-position: center;
     background-repeat: no-repeat;
-    /* Ensuring content is centered (these classes are already in your HTML) */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
 }
 
-/* Section title styles */
-.section-title {
-    margin-bottom: 60px;
-}
-
-.section-title .line {
-    width: 60px;
-    height: 4px;
-    background-color: var(--c-brand);
-    margin: 16px auto 24px auto;
-}
-
-.section-title p {
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Icon box styling */
 .iconbox {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(78, 87, 212, 0.1);
+    background-color: rgba(var(--c-brand-rgb), 0.1);
     color: var(--c-brand);
     font-size: 34px;
     flex: none;
-    border-radius: 50%;
-    margin: 0 auto;
 }
 
-/* CSS for "TEST" text block (ensure these are present) */
-.test-text-block h1 {
-    margin-top: 0 !important;
-    margin-bottom: 0.5rem !important;
-    line-height: 1.2;
+/* Lifts the "About" content block for an overlapping effect on larger screens */
+.about-content-lift {
+    margin-top: -150px;
 }
-
-.test-text-block p {
-    margin-top: 0 !important;
-}
-
-/* Custom rule to explicitly lift the About content block */
-#ABOUT .row.gy-4 .col-lg-6:last-child {
-    margin-top: -200px !important;
-    /* Start with -100px, adjust as needed (e.g., -150px, -200px) */
-    /* You might even consider position: relative; top: -100px; if margin doesn't give enough control */
-}
-
-/* Custom rule to explicitly lift the About content block */
-#ABOUT .row.gy-4 .col-lg-6:last-child {
-    margin-top: -200px !important;
-    /* Adjust this value (e.g., -120px, -150px) */
-}
-
 
 .service {
     position: relative;
     overflow: hidden;
-    z-index: 2;
-    color: var(--c-body);
+    z-index: 1;
     transition: var(--transition);
 }
 
+/* Animated background effect on hover */
 .service::after {
     content: "";
     width: 40px;
-    height: 40px;
-    background: rgb(var(--c-brand-rgb), 0.2);
+    height: 450px;
+    background-color: var(--c-brand);
     position: absolute;
-    bottom: 0;
-    right: 0;
+    top: -100%;
+    left: 0;
     transition: var(--transition);
     z-index: -1;
+    opacity: 0;
 }
 
 .service:hover::after {
-    width: 100%;
-    height: 100%;
-    background: var(--c-brand);
-    z-index: -1;
+    opacity: 1;
+    top: 0;
 }
 
-.servce:hover h5,
-.service:hover p {
-    color: #ffffff;
+.service:hover h5,
+.service:hover p,
+.service:hover .text-primary {
+    color: white !important;
 }
-
-.service:hover .iconbox {
-    background-color: rgba(255, 255, 255, 0.123);
-    color: white;
-}
-
 
 #counter {
     background: linear-gradient(#272525b7, #3f3d3dab), url(../images/Danvah-Hero.jpg);
     background-size: cover;
-    background-position: center top;
-    /* Adjusted to show more of the top of the image */
+    background-position: center;
     background-repeat: no-repeat;
-    /* Ensuring content is centered (these classes are already in your HTML) */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
+    padding: 120px 0;
 }
-
-
 
 .review small {
     font-weight: 600;
     text-transform: uppercase;
-    color: maroon;
+    color: var(--c-brand);
 }
 
 .review-head {
     position: relative;
 }
 
+/* Creates the small arrow pointing up from the review text block */
 .review-head::after {
     content: "";
     width: 28px;
     height: 28px;
     position: absolute;
     bottom: -14px;
+    left: 50%;
     background-color: white;
-    transform: rotate(45deg);
+    transform: translateX(-50%) rotate(45deg);
 }
 
+.review-person .review-person-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    /* Ensures the image is a circle */
+    object-fit: cover;
+    /* Prevents the image from being stretched or squashed */
+    border: 3px solid var(--c-brand);
+    /* Adds a themed border */
+}
+
+/* Team Member hover effect: content slides up */
+.team-member {
+    position: relative;
+}
 
 .team-member-content {
     background-color: var(--c-brand);
     position: absolute;
-    bottom: -24px;
+    bottom: 24px;
     left: 50%;
     width: calc(100% - 50px);
-    transform: translateX(-50%);
     padding: 24px;
     transition: var(--transition);
+    /* Start hidden and slightly down */
+    transform: translate(-50%, 20px);
     opacity: 0;
+    visibility: hidden;
 }
 
 .team-member:hover .team-member-content {
     opacity: 1;
-    bottom: 24px;
+    visibility: visible;
+    /* Move to final position */
+    transform: translate(-50%, 0);
 }
 
-
-#contact {
-    position: relative;
-    z-index: 2;
-}
-
-#contact::after {
-    content: "";
-    width: 100%;
-    height: 70%;
-    background: linear-gradient(#272525b7, #3f3d3dab);
-    background-size: cover;
-    background-position: center top;
-    /* Adjusted to show more of the top of the image */
-    background-repeat: no-repeat;
-    /* Ensuring content is centered (these classes are already in your HTML) */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-
-#contact .form-control {
-    border-radius: 0;
-}
-
-#contact .form-control:focus {
-    box-shadow: none;
-    border-color: var(--c-brand);
-}
-
-
+/* --- 6. Footer --- */
 footer {
     padding-top: 100px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .footer-top {
     padding-bottom: 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.0S8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-footer li,
-footer p,
+footer .line {
+    background-color: var(--c-brand);
+    margin: 0 0 24px 0;
+}
+
 footer a {
     color: rgba(255, 255, 255, 0.7);
 }
 
-footer ul {
-    list-style: none;
-    padding: 0;
-}
-
-footer .line {
-    width: 40px;
-    height: 4px;
-    background-color: var(--c-brand);
-    margin-top: 12px;
-    margin-bottom: 24px;
-}
-
-
-.social-icons a {
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 100px;
-}
-
-.social-icons a:hover {
-    background-color: var(--c-brand);
+footer a:hover {
     color: white;
 }
 
+/* --- 7. Carousel Customization --- */
+.carousel-item .review {
+    max-width: 75%;
+    margin: 0 auto 80px auto;
+    /* Center review and add bottom space for controls */
+}
 
+/* Customizing Carousel Controls */
+#reviewCarousel .carousel-control-prev,
+#reviewCarousel .carousel-control-next {
+    width: 60px;
+    height: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    background-color: var(--c-brand);
+    border-radius: 50%;
+}
+
+#reviewCarousel .carousel-control-prev {
+    left: 0;
+}
+
+#reviewCarousel .carousel-control-next {
+    right: 0;
+}
+
+/* --- 8. Media Queries --- */
 @media (max-width: 991.98px) {
     .navbar-collapse {
         background-color: white;
         padding: 1rem;
-        /* Optional: add some padding */
         box-shadow: var(--box-shadow);
-        /* Optional: add shadow for better visibility */
+    }
+
+    .about-content-lift {
+        margin-top: 0;
+    }
+
+    .carousel-item .review {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #reviewCarousel .carousel-control-prev,
+    #reviewCarousel .carousel-control-next {
+        display: none;
+        /* Hide side controls on smaller screens */
     }
 }
 
-
-
 @media (max-width: 576px) {
-    #hero h1 {
+    #HOME h1 {
         font-size: 2rem;
     }
 
-    #hero h5 {
+    #HOME h5 {
         font-size: 1rem;
     }
-}
 
-
-html {
-    scroll-padding-top: 70px;
-    /* adjust based on your navbar height */
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-
-
-@media (max-width: 576px) {
+    /* Disable AOS animations on small screens for better performance */
     [data-aos] {
         opacity: 1 !important;
         transform: none !important;
         animation: none !important;
     }
-}
 
-
-@media (max-width: 576px) {
-    #hero {
-        background: linear-gradient(#000000cc, #000000cc), url(../images/Danvah-Hero2.jpg);
+    /* Darken hero background on mobile for better text readability */
+    #HOME {
+        background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(../images/dubai-skyline.jpg);
         background-size: cover;
         background-position: center;
+    }
+}
+
+/* --- 9. Preloader --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    /* Ensures it's on top of all other content */
+    transition: opacity 0.75s ease, visibility 0.75s ease;
+}
+
+#preloader.preloader-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(var(--c-brand-rgb), 0.2);
+    /* Light part of the spinner */
+    border-top-color: var(--c-brand);
+    /* Colored part of the spinner */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
 }
